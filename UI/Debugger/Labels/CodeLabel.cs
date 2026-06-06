@@ -1,10 +1,10 @@
-﻿using Mesen.Interop;
+﻿using Avalonia.Media;
+using Mesen.Interop;
 using Mesen.Utilities;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using System;
 using System.Globalization;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Mesen.Debugger.Labels
 {
@@ -16,6 +16,13 @@ namespace Mesen.Debugger.Labels
 		public string Comment { get; set; } = "";
 		public CodeLabelFlags Flags { get; set; }
 		public UInt32 Length { get; set; } = 1;
+		public UInt32 ColorCode { get; set; } = Colors.LightPink.ToUInt32();
+
+		[JsonIgnore]
+		public Color Color
+		{
+			get { return Color.FromUInt32(ColorCode); }
+		}
 
 		public CodeLabel()
 		{
@@ -41,6 +48,9 @@ namespace Mesen.Debugger.Labels
 			sb.Append(":");
 
 			sb.Append(Label);
+			sb.Append(":");
+			sb.Append(ColorCode.ToString("X8"));
+
 			if(!string.IsNullOrWhiteSpace(Comment)) {
 				sb.Append(":");
 				sb.Append(Comment.Replace(Environment.NewLine, "\\n").Replace("\n", "\\n").Replace("\r", "\\n"));
@@ -51,7 +61,7 @@ namespace Mesen.Debugger.Labels
 		private static char[] _separator = new char[1] { ':' };
 		public static CodeLabel? FromString(string data)
 		{
-			string[] rowData = data.Split(_separator, 4);
+			string[] rowData = data.Split(_separator, 5);
 			if(rowData.Length < 3) {
 				//Invalid row
 				return null;
@@ -96,16 +106,20 @@ namespace Mesen.Debugger.Labels
 				return null;
 			}
 
+			if(!UInt32.TryParse(rowData[3], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var colorCode)) 
+				return null;
+
 			CodeLabel codeLabel;
 			codeLabel = new CodeLabel {
 				Address = address,
 				MemoryType = type,
 				Label = labelName,
 				Length = length,
+				ColorCode = colorCode,
 				Comment = ""
 			};
 
-			if(rowData.Length > 3) {
+			if(rowData.Length > 4) {
 				codeLabel.Comment = rowData[3].Replace("\\n", "\n");
 			}
 

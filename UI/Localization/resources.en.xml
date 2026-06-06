@@ -1670,6 +1670,7 @@
 			<Control ID="lblMemoryType">Memory type:</Control>
 			<Control ID="lblAddress">Address:</Control>
 			<Control ID="lblLabel">Label:</Control>
+			<Control ID="lblHighlightColor">Color:</Control>
 			<Control ID="lblComment">Comment:</Control>
 			<Control ID="lblLength">Length:</Control>
 			<Control ID="lblBytes">bytes</Control>

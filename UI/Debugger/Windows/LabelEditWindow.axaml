@@ -17,8 +17,8 @@
 	x:Class="Mesen.Debugger.Windows.LabelEditWindow"
 	x:DataType="vm:LabelEditViewModel"
 	Icon="/Assets/EditLabel.png"
-	Width="350" Height="250"
-	MinWidth="350" MinHeight="250"
+	Width="350" Height="280"
+	MinWidth="350" MinHeight="280"
 	Title="{l:Translate wndTitle}"
 >
 	<Design.DataContext>
@@ -35,7 +35,7 @@
 		<Grid
 			DockPanel.Dock="Right"
 			ColumnDefinitions="Auto,*"
-			RowDefinitions="Auto,Auto,Auto,*,Auto,Auto"
+			RowDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto"
 			Margin="5 0 5 0"
 		>
 			<TextBlock Grid.Column="0" Grid.Row="0" Text="{l:Translate lblMemoryType}" />
@@ -58,10 +58,13 @@
 				Name="txtLabel"
 				Text="{Binding Label.Label, Converter={StaticResource NullTextConverter}}"
 			/>
-
-			<TextBlock Grid.Column="0" Grid.Row="3" Text="{l:Translate lblComment}" />
+			
+			<TextBlock Grid.Column="0" Grid.Row="3" Text="{l:Translate lblHighlightColor}" />
+			<dc:ColorPickerField Grid.Column="1" Grid.Row="3" Color="{Binding Label.ColorCode}" />
+			
+			<TextBlock Grid.Column="0" Grid.Row="4" Text="{l:Translate lblComment}" />
 			<TextBox
-				Grid.Column="1" Grid.Row="3"
+				Grid.Column="1" Grid.Row="4"
 				AcceptsReturn="True"
 				ScrollViewer.HorizontalScrollBarVisibility="Auto"
 				Height="NaN"
@@ -72,8 +75,8 @@
 				FontSize="{DynamicResource MesenMonospaceFontSize}"
 			/>
 
-			<TextBlock Grid.Column="0" Grid.Row="4" Text="{l:Translate lblLength}" />
-			<StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="4">
+			<TextBlock Grid.Column="0" Grid.Row="5" Text="{l:Translate lblLength}" />
+			<StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="5">
 				<c:MesenNumericUpDown
 					Value="{Binding Label.Length}"
 					Minimum="1"
@@ -82,7 +85,7 @@
 				<TextBlock Text="{l:Translate lblBytes}" Margin="3 0" />
 			</StackPanel>
 
-			<Grid Grid.Row="5" Margin="0 5" Grid.ColumnSpan="2" ColumnDefinitions="Auto,*" RowDefinitions="Auto" IsVisible="{Binding ErrorMessage.Length}" >
+			<Grid Grid.Row="6" Margin="0 5" Grid.ColumnSpan="2" ColumnDefinitions="Auto,*" RowDefinitions="Auto" IsVisible="{Binding ErrorMessage.Length}" >
 				<Image Source="/Assets/Warning.png" Stretch="None" />
 				<TextBlock Grid.Column="1" Text="{Binding ErrorMessage}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="3 0 0 0" />
 			</Grid>
