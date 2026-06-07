@@ -161,9 +161,21 @@ namespace Mesen.Debugger
 				}
 			}
 
-			if(_hasLabel[index]) {
+			if(_hasLabel[index]) 
+			{
+				CodeLabel? codeLabel = null;
+
+				if(_memoryType.IsRelativeMemory()) {
+					AddressInfo addr = new AddressInfo();
+					addr.Type = _memoryType;
+					addr.Address = (int)(_firstByteIndex + index);
+					codeLabel = LabelManager.GetLabel(addr);
+				} else if(_memoryType.SupportsLabels()) {
+					codeLabel = LabelManager.GetLabel((uint)(_firstByteIndex + index), _memoryType);
+				}
+
 				//Labels/comments
-				_byteInfo.BackColor = _cfg.LabelHighlight.Color;
+				_byteInfo.BackColor = codeLabel?.Color ?? _cfg.LabelHighlight.Color;
 			}
 
 			_byteInfo.BorderColor = Colors.Transparent;
